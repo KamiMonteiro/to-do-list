@@ -37,16 +37,40 @@
             @if($tasks->count())
                 <ul class="list-group">
                     @foreach($tasks as $task)
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <div>
-                                <strong>{{ $task->title }}</strong><br>
-                                <small class="text-muted">{{ $task->description }}</small><br>
-                                <span class="badge bg-{{ $task->status === 'Concluída' ? 'success' : 'secondary' }}">
-                                    {{ $task->status }}
-                                </span>
-                            </div>
-                            {{-- Aqui futuramente botões de editar/deletar --}}
-                        </li>
+
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>{{ $task->title }}</strong><br>
+                            <small class="text-muted">{{ $task->description }}</small><br>
+                            <span class="badge bg-{{ $task->status === 'Concluída' ? 'success' : 'secondary' }}">
+                                {{ $task->status }}
+                            </span>
+                        </div>
+
+                        <div class="btn-group">
+                            {{-- Formulário para marcar como concluída --}}
+                            @if($task->status !== 'Concluída')
+                            <form method="POST" action="{{ route('tasks.update', $task) }}">
+                                @csrf
+                                @method('PUT')
+                                <input type="hidden" name="status" value="Concluída">
+                                <button class="btn btn-success btn-sm">Concluir</button>
+                            </form>
+                            @endif
+
+                            {{-- Link para editar --}}
+                            <a href="{{ route('tasks.edit', $task) }}" class="btn btn-warning btn-sm">Editar</a>
+
+                            {{-- Formulário para deletar --}}
+                            <form method="POST" action="{{ route('tasks.destroy', $task) }}" onsubmit="return confirm('Tem certeza que deseja excluir?')">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-danger btn-sm">Excluir</button>
+                            </form>
+                        </div>
+                    </li>
+
+
                     @endforeach
                 </ul>
             @else

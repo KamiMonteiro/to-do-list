@@ -54,7 +54,8 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
-        //
+        return view('tasks.edit', compact('task'));
+
     }
 
     /**
@@ -62,14 +63,18 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task)
     {
-        //
+        $task->update($request->only('title', 'description', 'status'));
+        return redirect()->route('tasks.index')->with('success', 'Tarefa atualizada.');
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Task $task)
     {
-        //
+        $task->delete();
+        return redirect()->route('tasks.index')->with('success', 'Tarefa excluída.');
     }
+
 }
