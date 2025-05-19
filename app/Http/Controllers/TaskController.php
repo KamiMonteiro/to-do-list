@@ -7,15 +7,18 @@ use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        $tasks = auth()->user()->tasks()->latest()->get();
+        $query = auth()->user()->tasks()->latest();
+    
+        if ($request->has('status') && in_array($request->status, ['Pendente', 'Concluída'])) {
+            $query->where('status', $request->status);
+        }
+    
+        $tasks = $query->get();
+    
         return view('tasks.index', compact('tasks'));
     }
-
 
     /**
      * Show the form for creating a new resource.
