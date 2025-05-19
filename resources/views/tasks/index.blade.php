@@ -92,9 +92,9 @@
                     <p>Você ainda não tem tarefas cadastradas.</p>
                 @endif
             </div>
-
-            <div class="mt-3"> {{ $tasks->withQueryString()->links() }} </div>
-
         </div>
+        
+        <div class="mt-3"> {{ $tasks->withQueryString()->links() }} </div>
+
     </div>
 @endsection
