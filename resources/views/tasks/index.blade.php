@@ -51,7 +51,7 @@
 
         {{-- ---}}<div class="container my-4">
             <div class="row justify-content-center">
-                <div class="col-12 col-md-10 col-lg-8"></div> 
+                <div class="col-12 col-md-10 col-lg-8"></div>
 
                 {{-- Lista de Tarefas --}}
                 <div class="card shadow rounded-4">
@@ -67,39 +67,42 @@
                                             <small>{{ $task->description }}</small><br>
                                             <span
                                                 class="badge 
-                                                                                                                                {{ $task->status === 'Concluída' ? 'bg-success' : 'bg-warning text-dark' }}">
+                                                                                                                                                                                {{ $task->status === 'Concluída' ? 'bg-success' : 'bg-warning text-dark' }}">
                                                 {{ $task->status }}
                                             </span>
                                         </div>
                                         <div class="btn-group gap-1">
 
                                             {{-- Formulário para marcar como concluída --}}
-                                            @if($task->status !== 'Concluída')
-                                                <form method="POST" action="{{ route('tasks.update', $task) }}">
-                                                    @csrf
-                                                    @method('PUT')
-                                                    <input type="hidden" name="status" value="Concluída">
+                                            <div class="d-flex flex-wrap gap-2">
+
+                                                @if($task->status !== 'Concluída')
+                                                    <form method="POST" action="{{ route('tasks.update', $task) }}">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <input type="hidden" name="status" value="Concluída">
+                                                        <button
+                                                            class="btn btn-success text-white rounded-pill d-flex align-items-center gap-1 px-3 py-1">
+                                                            <i class="bi bi-check2-circle"></i> Concluir
+                                                        </button>
+                                                    </form>
+                                                @endif
+
+                                                {{-- Link para editar --}}
+                                                <a href="{{ route('tasks.edit', $task) }}"
+                                                    class="btn btn-warning text-black rounded-pill d-flex align-items-center gap-1 px-3 py-1">
+                                                    <i class="bi bi-pencil-square"></i> Editar
+                                                </a>
+
+                                                {{-- Formulário para deletar --}}
+                                                <form method="POST" action="{{ route('tasks.destroy', $task) }}"
+                                                    onsubmit="return confirm('Tem certeza que deseja excluir?')"> @csrf
+                                                    @method('DELETE')
                                                     <button
-                                                        class="btn btn-success text-white rounded-pill d-flex align-items-center gap-1 px-3 py-1">
-                                                        <i class="bi bi-check2-circle"></i> Concluir
-                                                    </button>
+                                                        class="btn btn-danger text-white rounded-pill d-flex align-items-center gap-1 px-3 py-1">
+                                                        <i class="bi bi-trash"></i> Excluir </button>
                                                 </form>
-                                            @endif
-
-                                            {{-- Link para editar --}}
-                                            <a href="{{ route('tasks.edit', $task) }}"
-                                                class="btn btn-warning text-black rounded-pill d-flex align-items-center gap-1 px-3 py-1">
-                                                <i class="bi bi-pencil-square"></i> Editar
-                                            </a>
-
-                                            {{-- Formulário para deletar --}}
-                                            <form method="POST" action="{{ route('tasks.destroy', $task) }}"
-                                                onsubmit="return confirm('Tem certeza que deseja excluir?')"> @csrf
-                                                @method('DELETE')
-                                                <button
-                                                    class="btn btn-danger text-white rounded-pill d-flex align-items-center gap-1 px-3 py-1">
-                                                    <i class="bi bi-trash"></i> Excluir </button>
-                                            </form>
+                                            </div>
                                         </div>
                                     </li>
                                 @endforeach
