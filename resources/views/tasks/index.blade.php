@@ -58,7 +58,7 @@
                         @foreach($tasks as $task)
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 <div>
-                                    <small class="text-muted">{{ $task->created_at->format('d/m/Y H:i') }}</small><br>
+                                    <small class="text-muted">{{ $task->created_at->format('d/m/Y') }}</small><br>
                                     <strong>{{ $task->title }}</strong><br>
                                     <small>{{ $task->description }}</small><br>
                                     <span
