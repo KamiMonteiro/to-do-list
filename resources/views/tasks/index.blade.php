@@ -49,67 +49,72 @@
             @endif
         </form>
 
-        {{-- Lista de Tarefas --}}
-        <div class="card shadow rounded-4">
-            <div class="card-header bg-dark text-white rounded-top-4">Tarefas Cadastradas</div>
-            <div class="card-body">
-                @if($tasks->count())
-                    <ul class="list-group">
-                        @foreach($tasks as $task)
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <div>
-                                    <small class="text-muted">{{ $task->created_at->format('d/m/Y') }}</small><br>
-                                    <strong>{{ $task->title }}</strong><br>
-                                    <small>{{ $task->description }}</small><br>
-                                    <span
-                                        class="badge 
-                                                                                                                    {{ $task->status === 'Concluída' ? 'bg-success' : 'bg-warning text-dark' }}">
-                                        {{ $task->status }}
-                                    </span>
-                                </div>
-                                <div class="btn-group gap-1">
+        {{-- ---}}<div class="container my-4">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-10 col-lg-8"></div> 
 
-                                    {{-- Formulário para marcar como concluída --}}
-                                    @if($task->status !== 'Concluída')
-                                        <form method="POST" action="{{ route('tasks.update', $task) }}">
-                                            @csrf
-                                            @method('PUT')
-                                            <input type="hidden" name="status" value="Concluída">
-                                            <button
-                                                class="btn btn-success text-white rounded-pill d-flex align-items-center gap-1 px-3 py-1">
-                                                <i class="bi bi-check2-circle"></i> Concluir
-                                            </button>
-                                        </form>
-                                    @endif
+                {{-- Lista de Tarefas --}}
+                <div class="card shadow rounded-4">
+                    <div class="card-header bg-dark text-white rounded-top-4">Tarefas Cadastradas</div>
+                    <div class="card-body">
+                        @if($tasks->count())
+                            <ul class="list-group">
+                                @foreach($tasks as $task)
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <small class="text-muted">{{ $task->created_at->format('d/m/Y') }}</small><br>
+                                            <strong>{{ $task->title }}</strong><br>
+                                            <small>{{ $task->description }}</small><br>
+                                            <span
+                                                class="badge 
+                                                                                                                                {{ $task->status === 'Concluída' ? 'bg-success' : 'bg-warning text-dark' }}">
+                                                {{ $task->status }}
+                                            </span>
+                                        </div>
+                                        <div class="btn-group gap-1">
 
-                                    {{-- Link para editar --}}
-                                    <a href="{{ route('tasks.edit', $task) }}"
-                                        class="btn btn-warning text-black rounded-pill d-flex align-items-center gap-1 px-3 py-1">
-                                        <i class="bi bi-pencil-square"></i> Editar
-                                    </a>
+                                            {{-- Formulário para marcar como concluída --}}
+                                            @if($task->status !== 'Concluída')
+                                                <form method="POST" action="{{ route('tasks.update', $task) }}">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <input type="hidden" name="status" value="Concluída">
+                                                    <button
+                                                        class="btn btn-success text-white rounded-pill d-flex align-items-center gap-1 px-3 py-1">
+                                                        <i class="bi bi-check2-circle"></i> Concluir
+                                                    </button>
+                                                </form>
+                                            @endif
 
-                                    {{-- Formulário para deletar --}}
-                                    <form method="POST" action="{{ route('tasks.destroy', $task) }}"
-                                        onsubmit="return confirm('Tem certeza que deseja excluir?')"> @csrf @method('DELETE')
-                                        <button
-                                            class="btn btn-danger text-white rounded-pill d-flex align-items-center gap-1 px-3 py-1">
-                                            <i class="bi bi-trash"></i> Excluir </button>
-                                    </form>
-                                </div>
-                            </li>
-                        @endforeach
-                    </ul>
+                                            {{-- Link para editar --}}
+                                            <a href="{{ route('tasks.edit', $task) }}"
+                                                class="btn btn-warning text-black rounded-pill d-flex align-items-center gap-1 px-3 py-1">
+                                                <i class="bi bi-pencil-square"></i> Editar
+                                            </a>
 
-                @else
-                    <p>Você ainda não tem tarefas cadastradas.</p>
-                @endif
+                                            {{-- Formulário para deletar --}}
+                                            <form method="POST" action="{{ route('tasks.destroy', $task) }}"
+                                                onsubmit="return confirm('Tem certeza que deseja excluir?')"> @csrf
+                                                @method('DELETE')
+                                                <button
+                                                    class="btn btn-danger text-white rounded-pill d-flex align-items-center gap-1 px-3 py-1">
+                                                    <i class="bi bi-trash"></i> Excluir </button>
+                                            </form>
+                                        </div>
+                                    </li>
+                                @endforeach
+                            </ul>
+
+                        @else
+                            <p>Você ainda não tem tarefas cadastradas.</p>
+                        @endif
+                    </div>
+                </div>
+
+                {{-- Paginação --}}
+                <div class="mt-4">
+                    {{ $tasks->appends(request()->query())->links() }}
+                </div>
+
             </div>
-        </div>
-
-        {{-- Paginação --}}
-        <div class="mt-4">
-            {{ $tasks->appends(request()->query())->links() }}
-        </div>
-
-    </div>
 @endsection
